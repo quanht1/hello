@@ -1,0 +1,1097 @@
+================================================================
+  LEARNING HTML, CSS & JAVASCRIPT
+  Line-by-line explanation of: index.html
+  "Dog Wisdom — Lia & the AI Disciples" ebook website
+================================================================
+
+This file teaches you every concept used in index.html.
+We go section by section, line by line, explaining WHY
+each piece of code exists and WHAT it does.
+
+----------------------------------------------------------------
+TABLE OF CONTENTS
+----------------------------------------------------------------
+  PART 1 — HTML FOUNDATIONS         (lines 1–6)
+  PART 2 — CSS BASICS & VARIABLES   (lines 7–19)
+  PART 3 — CSS RESET & BODY         (lines 21–28)
+  PART 4 — NAVBAR STYLING           (lines 30–41)
+  PART 5 — HERO SECTION STYLING     (lines 43–105)
+  PART 6 — SHARED SECTION STYLES    (lines 107–117)
+  PART 7 — CHARACTER CARDS          (lines 119–152)
+  PART 8 — ACCORDION CHAPTERS       (lines 154–195)
+  PART 9 — QUOTE CAROUSEL STYLES    (lines 197–227)
+  PART 10 — RASPBERRY PI SECTION    (lines 229–263)
+  PART 11 — ABOUT LIA SECTION       (lines 265–284)
+  PART 12 — FOOTER & PROGRESS BAR   (lines 286–301)
+  PART 13 — HTML BODY STRUCTURE     (lines 303–785)
+  PART 14 — JAVASCRIPT EXPLAINED    (lines 787–858)
+  PART 15 — KEY CONCEPTS SUMMARY
+
+
+================================================================
+PART 1 — HTML FOUNDATIONS  (lines 1–6)
+================================================================
+
+LINE 1:  <!DOCTYPE html>
+-----------------------------------------------------------------
+This is a DECLARATION, not a tag. It tells the web browser:
+"This file uses modern HTML5." Without it, some browsers go into
+a broken "quirks mode" and your page looks wrong.
+Rule: Always put this as the very first line of every HTML file.
+
+
+LINE 2:  <html lang="en">
+-----------------------------------------------------------------
+The <html> tag is the ROOT element — it wraps the entire page.
+Everything on your website lives inside this tag.
+
+  lang="en"  → This is an ATTRIBUTE. It tells the browser and
+               screen readers that the page language is English.
+               Important for accessibility (blind users) and SEO.
+
+Attributes always go inside the opening tag and follow the
+pattern:  attributeName="value"
+
+
+LINE 3:  <head>
+-----------------------------------------------------------------
+The <head> section contains METADATA — information ABOUT the page
+that is NOT visible to the user. Think of it as the brain's
+background processes: settings, styles, titles.
+
+Everything between <head> and </head> is invisible on screen.
+
+
+LINE 4:  <meta charset="UTF-8" />
+-----------------------------------------------------------------
+META tags give the browser extra information.
+
+  charset="UTF-8"  → Character encoding. UTF-8 supports every
+                     character in every language, plus emojis.
+                     Without this, special characters (like é, ñ,
+                     or 🐾) may display as broken symbols.
+
+The  />  at the end means this is a SELF-CLOSING tag — it has no
+content inside, so it doesn't need a separate closing tag.
+
+
+LINE 5:  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-----------------------------------------------------------------
+This makes the website RESPONSIVE (works on phones and tablets).
+
+  name="viewport"               → Targets the visible screen area
+  content="width=device-width"  → Match page width to screen width
+  initial-scale=1.0             → Don't zoom in or out at start
+
+Without this line, your website would appear tiny on mobile
+phones because mobile browsers pretend the screen is wide.
+
+
+LINE 6:  <title>Dog Wisdom — Lia & the AI Disciples</title>
+-----------------------------------------------------------------
+The text that appears in:
+  - The browser tab at the top
+  - Google search results
+  - When you bookmark the page
+
+The  &amp;  you see in the HTML for the "&" character is called
+an HTML ENTITY. Because & has special meaning in HTML, you write
+&amp; to display a literal ampersand. Common entities:
+  &amp;   →  &
+  &lt;    →  <
+  &gt;    →  >
+  &copy;  →  ©
+
+
+================================================================
+PART 2 — CSS BASICS & VARIABLES  (lines 7–19)
+================================================================
+
+LINE 7:  <style>
+-----------------------------------------------------------------
+This tag opens a CSS block inside HTML. Everything between
+<style> and </style> is CSS (Cascading Style Sheets).
+CSS controls how things LOOK: colors, sizes, positions, fonts.
+
+
+LINES 8–19:  :root { ... }
+-----------------------------------------------------------------
+:root  is a special CSS selector that targets the <html> element.
+It's used here to define CUSTOM PROPERTIES, also called
+CSS VARIABLES. This is one of the most powerful CSS features.
+
+  --cream:   #fdf6ec;    → A warm white color (hex code)
+  --amber:   #e8a838;    → Golden yellow (used for highlights)
+  --brown:   #6b3d14;    → Deep brown (Lia's warm tones)
+  --dark:    #1a1a2e;    → Near-black navy (backgrounds)
+  --slate:   #2d3561;    → Medium blue-grey
+  --teal:    #0f9b8e;    → A green-blue accent color
+  --rose:    #e05b6c;    → Pink-red (defined but used sparingly)
+  --card-bg: #ffffff;    → Pure white for cards
+  --shadow:  0 4px 24px rgba(0,0,0,.12);  → A box-shadow value
+  --radius:  14px;       → Rounded corners size
+
+HOW COLORS WORK IN CSS:
+  #fdf6ec  → Hexadecimal color. # + 6 hex digits (0-9, A-F).
+             Each pair controls Red, Green, Blue:
+             #RRGGBB  e.g. #ff0000 = pure red
+  rgba(0,0,0,.12)  → Red, Green, Blue, Alpha (transparency).
+                     0,0,0 = black. .12 = 12% opacity.
+
+HOW TO USE VARIABLES:
+  Once defined, you use them anywhere with  var(--name):
+  Example:  background: var(--cream);
+  This is like giving your colors nicknames. If you want to
+  change the amber color across the whole site, you change
+  it in ONE place here, and it updates everywhere.
+
+
+================================================================
+PART 3 — CSS RESET & BODY  (lines 21–28)
+================================================================
+
+LINE 21:  * { box-sizing: border-box; margin: 0; padding: 0; }
+-----------------------------------------------------------------
+The  *  selector means "select EVERY element on the page."
+
+  box-sizing: border-box  → Changes how width/height is calculated.
+    By default (content-box), padding is ADDED to width.
+    With border-box, padding is INCLUDED in width.
+    Example: a 100px wide box with 10px padding stays 100px total
+    (not 120px). This makes layouts much more predictable.
+
+  margin: 0   → Removes default browser margins (space outside elements).
+  padding: 0  → Removes default browser padding (space inside elements).
+
+Browsers add default spacing to things like <h1>, <p>, <body>.
+This "reset" wipes those defaults so you start from scratch.
+
+
+LINES 23–28:  body { ... }
+-----------------------------------------------------------------
+Styles the <body> tag — the entire visible page.
+
+  font-family: 'Georgia', serif;
+    → Sets the default font to Georgia (a serif font with elegant
+      serifs/feet on letters). The second value 'serif' is a
+      FALLBACK — if Georgia isn't available, use any serif font.
+    → Font stacks always list preferred first, fallback second.
+
+  background: var(--cream);
+    → Page background color using our CSS variable.
+
+  color: var(--dark);
+    → Default text color. All text inherits this unless overridden.
+
+  overflow-x: hidden;
+    → Prevents horizontal scrollbars if anything accidentally
+      extends beyond the page width. 'x' = horizontal axis.
+
+
+================================================================
+PART 4 — NAVBAR STYLING  (lines 30–41)
+================================================================
+
+LINES 31–37:  nav { ... }
+-----------------------------------------------------------------
+Styles the navigation bar at the top.
+
+  position: fixed;
+    → The navbar STAYS at the top even when you scroll down.
+      Other position values:
+      - static   (default, flows with the page)
+      - relative (offset from its normal position)
+      - absolute (positioned relative to nearest positioned parent)
+      - fixed    (positioned relative to the browser window)
+      - sticky   (hybrid: flows until it hits an edge, then sticks)
+
+  top: 0;
+    → Pins it to the top edge (works because position is fixed).
+
+  width: 100%;
+    → Stretches the full width of the screen.
+
+  z-index: 999;
+    → Controls the STACKING ORDER. Elements with higher z-index
+      appear ON TOP of elements with lower z-index.
+      The navbar needs to sit above everything else on the page.
+
+  background: rgba(26,26,46,.92);
+    → Dark navy color at 92% opacity — slightly transparent,
+      so you can faintly see page content through it.
+
+  backdrop-filter: blur(8px);
+    → BLURS whatever is behind the navbar (the page content).
+      This creates a "frosted glass" effect popular in modern UI.
+
+  display: flex;
+    → FLEXBOX layout. Makes the navbar's children (logo and links)
+      sit in a ROW by default and gives us powerful alignment tools.
+
+  align-items: center;
+    → Vertically centers children in the flex container.
+
+  justify-content: space-between;
+    → Pushes the logo to the LEFT and the nav links to the RIGHT
+      with space between them.
+
+  padding: .75rem 2rem;
+    → Inner spacing. Two values: top/bottom (.75rem), left/right (2rem).
+    → rem = "root em" — relative to the root font size (usually 16px).
+      So .75rem ≈ 12px, 2rem = 32px.
+
+
+LINE 38:  .nav-logo { ... }
+-----------------------------------------------------------------
+The  .  prefix means this is a CLASS SELECTOR.
+It styles any element with class="nav-logo".
+
+  letter-spacing: .04em;
+    → Slightly spreads out the letters. em is relative to the
+      element's own font size. .04em = 4% of the font size.
+
+
+LINE 39:  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+-----------------------------------------------------------------
+  display: flex    → Makes the list items sit in a row.
+  gap: 1.5rem      → Adds 24px spacing between each link.
+  list-style: none → Removes the bullet points from the <ul> list.
+
+
+LINES 40–41:  .nav-links a { ... }  and  .nav-links a:hover { ... }
+-----------------------------------------------------------------
+  .nav-links a  → Targets <a> anchor tags INSIDE .nav-links.
+                  This is called a DESCENDANT SELECTOR.
+
+  text-decoration: none;  → Removes the default underline from links.
+  transition: color .2s;  → Animates the color change over 0.2 seconds.
+
+  :hover  → A PSEUDO-CLASS. Applies styles when the user hovers
+            their mouse over the element.
+  color: var(--amber)  → Link turns gold when hovered.
+
+
+================================================================
+PART 5 — HERO SECTION STYLING  (lines 43–105)
+================================================================
+
+LINES 44–50:  #hero { ... }
+-----------------------------------------------------------------
+The  #  prefix means this is an ID SELECTOR.
+It styles the element with id="hero". IDs are unique — only one
+element on the page should have a given ID.
+
+  min-height: 100vh;
+    → Minimum height = 100% of the Viewport Height.
+      vh = viewport height unit. 100vh = full screen height.
+      'min-height' (not 'height') lets it grow if content is taller.
+
+  background: linear-gradient(145deg, #1a1a2e 0%, #2d3561 50%, #0f9b8e22 100%);
+    → A diagonal gradient (145 degrees from top-left).
+      Goes from dark navy → medium blue → faint teal.
+      The percentages (0%, 50%, 100%) are COLOR STOPS — where
+      each color starts/ends along the gradient.
+      The '22' at the end of #0f9b8e22 is the hex alpha channel
+      (transparency). 22 in hex ≈ 13% opacity.
+
+  display: flex; flex-direction: column;
+    → Flex layout with children stacked VERTICALLY (column).
+
+  align-items: center;
+    → Centers children horizontally (in a column flex).
+
+  justify-content: center;
+    → Centers children vertically (in a column flex).
+
+  position: relative;
+    → Makes this element a "positioning context" for absolute
+      children (like the floating paw prints).
+
+  overflow: hidden;
+    → Clips any child that extends beyond the hero box edges.
+
+
+LINES 51–56:  #hero::before { ... }
+-----------------------------------------------------------------
+::before and ::after are PSEUDO-ELEMENTS.
+They create a virtual element INSIDE the selected element,
+before or after its real content, without adding HTML.
+
+  content: '';
+    → Required for pseudo-elements to appear. Empty string here
+      because we just want a decorative shape, not text.
+
+  position: absolute; inset: 0;
+    → 'inset: 0' is shorthand for top:0; right:0; bottom:0; left:0.
+      Combined with absolute positioning, this stretches the
+      pseudo-element to fill the entire #hero container.
+
+  background: radial-gradient(...), radial-gradient(...);
+    → TWO radial gradients layered on top of each other (comma-separated).
+      radial-gradient() creates a circular/elliptical glow.
+      'ellipse at 30% 60%' places the center at 30% from left, 60% from top.
+      #e8a83818 = amber color at ~9% opacity (glow effect).
+      The second gradient adds a teal glow in the top-right area.
+
+
+LINES 57–64:  .paw-float and @keyframes drift
+-----------------------------------------------------------------
+  position: absolute;
+    → Positions paw icons freely within #hero (which is 'relative').
+
+  opacity: .07;
+    → Only 7% visible — very subtle background decoration.
+
+  animation: drift 12s ease-in-out infinite alternate;
+    → Connects to the @keyframes named 'drift'.
+      12s         = animation takes 12 seconds per cycle
+      ease-in-out = starts slow, speeds up, then slows down
+      infinite    = loops forever
+      alternate   = goes forward then backward (up then back down)
+
+@keyframes drift {
+  from { transform: translateY(0) rotate(-10deg); }
+  to   { transform: translateY(-30px) rotate(10deg); }
+}
+    → Defines the animation.
+      'from' is the start state, 'to' is the end state.
+      translateY(-30px) = moves 30px upward
+      rotate(-10deg/10deg) = tilts the paw print slightly
+      Because of 'alternate', it drifts up then back down.
+
+
+LINES 65–72:  .hero-badge { ... }
+-----------------------------------------------------------------
+  display: inline-block;
+    → An element that flows like text (inline) but can have
+      width/height/padding (block). Perfect for pill-shaped badges.
+
+  border-radius: 50px;
+    → Large border-radius makes rectangular elements look like pills.
+      Any value >= half the height creates perfect pill shape.
+
+  text-transform: uppercase;
+    → Forces ALL CAPS regardless of how the text is typed in HTML.
+
+  letter-spacing: .1em;
+    → Spreads letters apart for a sleek "label" look.
+
+  position: relative; z-index: 1;
+    → Ensures the badge appears ABOVE the ::before pseudo-element
+      (which has a lower z-index by default since it's a background).
+
+
+LINE 74:  font-size: clamp(2.4rem, 6vw, 5rem);
+-----------------------------------------------------------------
+clamp() is a powerful CSS function with 3 values:
+  clamp(MINIMUM, PREFERRED, MAXIMUM)
+
+  2.4rem  = never smaller than this (≈38px)
+  6vw     = preferred: 6% of viewport width (scales with screen)
+  5rem    = never larger than this (≈80px)
+
+This makes the heading automatically resize between small phones
+and large monitors — without any media queries needed!
+
+
+LINE 78:  #hero h1 span { color: var(--amber); }
+-----------------------------------------------------------------
+This is a COMBINED SELECTOR:
+  - #hero   → inside the hero section
+  - h1      → inside an h1 heading
+  - span    → target a span element
+Only the word "Wisdom" is wrapped in <span>, so only that word
+turns amber/gold. Everything else in the h1 stays white.
+
+
+LINES 84–93:  .hero-cta and .btn
+-----------------------------------------------------------------
+  flex-wrap: wrap;
+    → If buttons don't fit on one line (small screens), they wrap
+      to the next line instead of overflowing.
+
+  cursor: pointer;
+    → Shows the hand/pointer cursor on hover, signaling clickability.
+
+  border: 2px solid transparent;
+    → Invisible border by default. Why have it? To prevent the
+      element from shifting in size when a colored border is added
+      on hover (space is already reserved).
+
+  transition: all .25s;
+    → Animates ALL changeable properties over 0.25 seconds.
+
+LINE 95:  .btn-primary:hover { transform: translateY(-2px); box-shadow: ... }
+    → On hover, the button "lifts" 2px upward (translateY negative = up).
+    → box-shadow adds a glow shadow beneath for depth.
+
+
+LINES 99–105:  .scroll-hint and @keyframes bounce
+-----------------------------------------------------------------
+  left: 50%; transform: translateX(-50%);
+    → Classic CSS trick to CENTER an element horizontally.
+      'left: 50%' moves it to the middle of the parent.
+      'translateX(-50%)' shifts it back by half its own width.
+      Result: perfectly centered no matter the element's width.
+
+@keyframes bounce uses percentage keyframes (0%, 50%, 100%)
+instead of from/to. This gives more control — 0% and 100% are
+the same (no movement), 50% is 6px down. Creates a subtle bounce.
+
+
+================================================================
+PART 6 — SHARED SECTION STYLES  (lines 107–117)
+================================================================
+
+LINE 108:  section { padding: 80px 1.5rem; }
+-----------------------------------------------------------------
+All <section> elements get:
+  80px top/bottom padding → breathing room above/below content
+  1.5rem left/right padding → keeps content from touching screen edges
+
+LINE 109:  .container { max-width: 960px; margin: 0 auto; }
+-----------------------------------------------------------------
+  max-width: 960px  → Content never gets wider than 960px.
+                      On wide screens, it stays centered.
+  margin: 0 auto    → '0' top/bottom margin, 'auto' left/right.
+                      'auto' splits remaining space equally on
+                      both sides — this is how you center a block
+                      element horizontally in CSS.
+
+
+LINE 115:  font-size: clamp(1.8rem, 4vw, 2.8rem);
+-----------------------------------------------------------------
+Same clamp() technique as the hero heading — responsive font size
+that scales smoothly between screen sizes.
+
+
+================================================================
+PART 7 — CHARACTER CARDS  (lines 119–152)
+================================================================
+
+LINES 124–127:  .char-grid
+-----------------------------------------------------------------
+  display: grid;
+    → CSS GRID layout. More powerful than flexbox for 2D layouts.
+
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    → This is the magic of responsive grids, broken down:
+
+    repeat(auto-fit, ...)  → Create as many columns as fit
+    minmax(260px, 1fr)     → Each column is at least 260px wide,
+                             and can grow to fill equal share (1fr)
+
+    Result: 3 columns on desktop, 2 on tablet, 1 on mobile.
+    Completely responsive with zero media queries!
+
+  gap: 1.5rem;
+    → Space between grid cells (both horizontal and vertical).
+
+
+LINES 128–136:  .char-card
+-----------------------------------------------------------------
+  overflow: hidden;
+    → Clips the card's content at its border-radius edges.
+      Without this, child elements could stick outside the rounded corners.
+
+  transition: transform .3s, box-shadow .3s;
+    → Animates ONLY transform and box-shadow (more efficient than 'all').
+
+  .char-card:hover { transform: translateY(-6px); }
+    → Card floats up 6px on hover — a satisfying "lift" effect.
+
+  .char-card.lia  →  Two classes on the SAME element (no space between).
+                     Styles an element that has BOTH .char-card AND .lia.
+                     This is how you apply different colors to each card
+                     while sharing common card styles.
+
+
+================================================================
+PART 8 — ACCORDION CHAPTERS  (lines 154–195)
+================================================================
+
+The accordion is a UI pattern where clicking a header
+shows/hides the content below it.
+
+LINES 179–183:  .chapter-body and .chapter-item.open .chapter-body
+-----------------------------------------------------------------
+  max-height: 0; overflow: hidden;
+    → The body is invisible because max-height is 0.
+      'overflow: hidden' hides anything that extends beyond max-height.
+
+  transition: max-height .4s ease;
+    → When max-height changes, animate it over 0.4 seconds.
+
+  .chapter-item.open .chapter-body { max-height: 600px; }
+    → When the parent .chapter-item has the 'open' class added,
+      expand max-height to 600px — content slides into view.
+
+WHY NOT USE height DIRECTLY?
+    → You can't animate 'height: auto' in CSS.
+      The max-height trick works around this: animate from 0 to a
+      large number, and the transition reveals the content.
+
+LINE 178:  .chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+-----------------------------------------------------------------
+    → The arrow (▼) rotates 180° when the item is open (becomes ▲).
+      .chapter-item.open .chapter-arrow uses DESCENDANT + STATE:
+      "find .chapter-arrow inside a .chapter-item that has .open class"
+
+This trick — adding/removing a CSS class with JavaScript to
+trigger CSS transitions — is the foundation of most UI animations.
+
+
+================================================================
+PART 9 — QUOTE CAROUSEL STYLES  (lines 197–227)
+================================================================
+
+LINES 202–208:  .quote-slide
+-----------------------------------------------------------------
+  position: absolute; top: 0; left: 0; right: 0;
+    → All slides stack ON TOP of each other in the same space.
+
+  opacity: 0;
+    → All slides are invisible by default.
+
+  pointer-events: none;
+    → Invisible slides cannot be clicked (prevents ghost clicks).
+
+  transform: translateY(12px);
+    → Slides start 12px below their natural position (for animation).
+
+  transition: opacity .5s, transform .5s;
+    → Fade + slide-up animation takes 0.5 seconds.
+
+  .quote-slide.active
+    → opacity: 1 (visible) + translateY(0) (natural position)
+    → position: relative (takes up space again so the container has height)
+
+This is the standard CSS-only FADE + SLIDE technique for carousels.
+JavaScript handles the toggling of the 'active' class.
+
+
+================================================================
+PART 10 — RASPBERRY PI SECTION  (lines 229–263)
+================================================================
+
+LINE 235:  @media(max-width:600px){ .pi-grid { grid-template-columns: 1fr; } }
+-----------------------------------------------------------------
+This is a MEDIA QUERY — CSS that only applies at certain screen sizes.
+
+  @media(max-width:600px)  → "Only apply the styles inside these
+                              curly braces when screen is ≤600px wide"
+
+  grid-template-columns: 1fr  → Switch from 2 columns to 1 column
+                                 on small screens (mobile phones).
+
+This is how responsive design worked BEFORE clamp() and auto-fit.
+Media queries are still essential for layout changes.
+
+LINE 268:  @media(max-width:600px){ .about-grid { grid-template-columns: 1fr; } }
+-----------------------------------------------------------------
+Same pattern in the About Lia section — stacks portrait and text
+vertically on mobile instead of side by side.
+
+
+LINES 243–248:  .pi-visual::after
+-----------------------------------------------------------------
+A second pseudo-element trick. ::after creates a decorative
+glowing circle in the bottom-right corner of the Pi visual box:
+
+  bottom: -30px; right: -30px;  → Partially outside the box edge
+  border-radius: 50%;           → Circle shape
+  background: radial-gradient(circle, #0f9b8e33, transparent);
+    → Teal glow that fades out (33 = ~20% opacity in hex)
+
+The parent has overflow: hidden, so the circle is clipped at the
+box edge, creating a subtle corner glow effect.
+
+
+================================================================
+PART 11 — ABOUT LIA SECTION  (lines 265–284)
+================================================================
+
+LINE 274:  box-shadow: 0 0 0 8px #fdf6ec, 0 0 0 10px var(--amber);
+-----------------------------------------------------------------
+Box shadows are STACKED with commas. Here, two shadows create
+a double-ring effect around the portrait circle:
+
+  0 0 0 8px #fdf6ec   → No offset, no blur, 8px SPREAD of cream color
+                         (fills the gap between circle and amber ring)
+  0 0 0 10px var(--amber)  → 10px spread of amber color (the outer ring)
+
+This is a CSS trick to fake a "border outside the border" —
+regular borders can't be placed outside an element's box model,
+but box-shadow can.
+
+
+================================================================
+PART 12 — FOOTER & PROGRESS BAR  (lines 286–301)
+================================================================
+
+LINES 296–300:  #progress-bar
+-----------------------------------------------------------------
+  position: fixed; top: 0; left: 0; height: 3px;
+    → A thin bar pinned to the very top of the viewport.
+
+  background: linear-gradient(90deg, var(--amber), var(--teal));
+    → 90° = horizontal gradient, amber to teal.
+
+  width: 0%;
+    → Starts at 0% width. JavaScript will update this as you scroll.
+
+  z-index: 10000;
+    → Above everything including the navbar (which is z-index: 999).
+
+
+================================================================
+PART 13 — HTML BODY STRUCTURE  (lines 303–785)
+================================================================
+
+LINE 305:  <div id="progress-bar"></div>
+-----------------------------------------------------------------
+An empty <div> — just a box. It has no content; CSS and JavaScript
+give it meaning (the scroll progress bar at the top).
+
+<div> = "division" — a generic container. Use it when no other
+semantic tag fits. Compare to semantic tags:
+  <nav>     = navigation
+  <section> = a thematic section of content
+  <footer>  = bottom of page
+  <header>  = top of page/section
+  <article> = self-contained piece of content
+  <main>    = main content of the page
+
+Semantic tags help screen readers and search engines understand
+your page structure. Use them instead of <div> when they fit.
+
+
+LINES 308–317:  <nav> ... </nav>
+-----------------------------------------------------------------
+  <nav>  → Semantic navigation element.
+
+  &#128054;  → An HTML ENTITY for an emoji (dog face 🐶).
+               &#NNNNN; inserts Unicode characters by their number.
+               Common ones:
+               &#128062; = 🐾 (paw prints)
+               &#128214; = 📖 (book)
+               &#8964;   = ⌤ (down arrow chevron)
+
+  <ul>  → Unordered list (bullet list by default, we removed bullets with CSS)
+  <li>  → List item (must be direct child of <ul> or <ol>)
+  <a href="#characters">Characters</a>
+    → Link to the section with id="characters" on the SAME PAGE.
+      '#' prefix means it's an anchor link (jump to ID, not new page).
+      JavaScript later intercepts these clicks for smooth scrolling.
+
+
+LINES 320–342:  Hero section HTML
+-----------------------------------------------------------------
+  <section id="hero">
+    → id="hero" connects this element to the CSS #hero rule.
+      IDs are also used for JavaScript: document.getElementById('hero')
+      and for anchor links: <a href="#hero">
+
+  <span class="paw-float" style="top:15%;left:8%;animation-delay:0s">
+    → Inline STYLE attribute directly on the element.
+      Used here for position values that are unique per paw print.
+      Each paw has different position and animation delay.
+
+  animation-delay:0s / 1s / 2s / 3s
+    → Staggers the animations so paws don't all move in sync.
+      They appear to float independently.
+
+  <h1>Dog <span>Wisdom</span><br>for the AI Mind</h1>
+    → <br> = line break. Forces "for the AI Mind" to a new line.
+    → The <span> wraps "Wisdom" so CSS can color just that word.
+
+  &amp;  → HTML entity for & character (used in "Lia &amp; the AI Disciples")
+  &bull; → HTML entity for bullet • (used in footer)
+
+
+LINES 344–406:  Characters section HTML
+-----------------------------------------------------------------
+  <h2 class="section-title">The Teacher &amp; <span>Her Students</span></h2>
+    → <h2> is the second-level heading. Heading levels:
+      h1 = most important (one per page, usually the main title)
+      h2 = section headings
+      h3 = sub-section headings
+      h4-h6 = deeper nesting (use sparingly)
+      Screen readers and search engines use heading hierarchy to
+      understand page structure.
+
+  <div class="char-card lia">
+    → Two CSS classes on one element. Separated by a space.
+      First class = shared card styling
+      Second class = unique color/gradient for this specific card
+
+
+LINES 417–621:  Chapters section HTML
+-----------------------------------------------------------------
+  <div class="chapter-list" id="chapterList">
+    → Has BOTH class and id. The id is used by JavaScript
+      (document.getElementById('chapterList')) to attach a
+      click listener. The class is for CSS styling.
+
+For each chapter:
+  .chapter-item        → the whole accordion row
+    .chapter-header    → the clickable top part (JS listens here)
+      .chapter-num     → the number circle
+      .chapter-info    → title + subtitle
+      .chapter-arrow   → the ↓ arrow that rotates
+    .chapter-body      → hidden content (max-height: 0 initially)
+      .chapter-body-inner → the actual text content
+
+<em>text</em>
+    → Emphasis — renders in ITALIC. Use for genuine emphasis,
+      not just for styling (use CSS for pure style).
+
+<strong>text</strong>
+    → Strong importance — renders in BOLD. Use for genuinely
+      important content.
+
+
+LINES 625–674:  Quotes section HTML
+-----------------------------------------------------------------
+  <div class="quote-slide active">  → First slide starts visible
+  <div class="quote-slide">         → Other slides start hidden
+
+  The JavaScript carousel will add/remove the 'active' class
+  to switch which slide is visible.
+
+  <div class="quote-dots" id="quoteDots"></div>
+    → This div is EMPTY in the HTML. JavaScript creates the dot
+      elements dynamically and inserts them here.
+      This is called "dynamic DOM creation."
+
+
+LINES 776–785:  Footer HTML
+-----------------------------------------------------------------
+  <footer>
+    → Semantic element for the bottom of the page.
+
+  <p style="margin-top:.4rem">
+    → Inline style for one-off adjustments that don't need a class.
+      Good for small, non-reusable tweaks.
+
+  opacity:.5
+    → 50% transparent — the fine print is de-emphasized visually.
+
+
+================================================================
+PART 14 — JAVASCRIPT EXPLAINED  (lines 787–858)
+================================================================
+
+JavaScript runs IN THE BROWSER and makes pages interactive.
+It can read/change HTML elements, respond to user actions,
+and create animations.
+
+The <script> tag at the bottom of <body> ensures the HTML is
+fully loaded before JavaScript tries to access it.
+
+----------------------------------------------------------------
+SECTION 1: Progress Bar (lines 789–793)
+----------------------------------------------------------------
+
+window.addEventListener('scroll', () => {
+-----------------------------------------------------------------
+  window          → The browser window object. Top of everything.
+  addEventListener → Attaches a function to run when an event fires.
+  'scroll'        → The event: fires every time the user scrolls.
+  () => { ... }   → Arrow function — the code to run when scrolling.
+
+const doc = document.documentElement;
+-----------------------------------------------------------------
+  document            → The HTML page, accessible as a JavaScript object.
+  documentElement     → The <html> element (root of the document).
+
+const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+-----------------------------------------------------------------
+  doc.scrollTop       → How many pixels the user has scrolled down.
+  doc.scrollHeight    → Total height of the whole page (including off-screen).
+  doc.clientHeight    → Height of the visible window.
+  scrollHeight - clientHeight  → Maximum scroll distance possible.
+
+  Dividing scrollTop by that maximum gives a number from 0 to 1.
+  Multiply by 100 to get a percentage (0% to 100%).
+
+document.getElementById('progress-bar').style.width = pct + '%';
+-----------------------------------------------------------------
+  getElementById('progress-bar')  → Find the element with id="progress-bar"
+  .style.width                    → Change its CSS width property
+  pct + '%'                       → Concatenate the number with '%' string
+
+RESULT: The bar grows from 0% to 100% as you scroll.
+
+
+----------------------------------------------------------------
+SECTION 2: Accordion (lines 796–803)
+----------------------------------------------------------------
+
+document.getElementById('chapterList').addEventListener('click', e => {
+-----------------------------------------------------------------
+  We listen for clicks on the WHOLE chapter list, not on each
+  header individually. This is called EVENT DELEGATION:
+  - One listener instead of 8 (one per chapter)
+  - Works even for chapters added dynamically later
+  - More efficient
+
+  'e' (or 'event') is the event OBJECT — contains information
+  about what was clicked, where, etc.
+
+const header = e.target.closest('.chapter-header');
+-----------------------------------------------------------------
+  e.target       → The exact element that was clicked.
+  .closest(selector)  → Walks UP the DOM tree from the clicked element,
+                        returning the first ancestor matching the selector.
+                        If the user clicks the chapter title text, e.target
+                        is the <h3>, but .closest('.chapter-header') finds
+                        the containing header div.
+
+if (!header) return;
+-----------------------------------------------------------------
+  If the click was outside any .chapter-header (e.g., clicking
+  the padding), 'header' is null. 'return' exits the function early.
+  This is a GUARD CLAUSE pattern — check for invalid conditions first.
+
+const wasOpen = item.classList.contains('open');
+-----------------------------------------------------------------
+  .classList  → The list of CSS classes on an element.
+  .contains('open')  → Returns true/false: does the element have class 'open'?
+
+document.querySelectorAll('.chapter-item.open').forEach(el => el.classList.remove('open'));
+-----------------------------------------------------------------
+  querySelectorAll  → Returns ALL matching elements (unlike querySelector
+                      which returns only the first).
+  .forEach(...)     → Loop through each result and run a function.
+  .classList.remove('open')  → Removes the 'open' class, closing the chapter.
+
+  This line closes ALL open chapters before opening the clicked one.
+
+if (!wasOpen) item.classList.add('open');
+-----------------------------------------------------------------
+  If the item was ALREADY open (wasOpen = true), we don't re-open it.
+  This allows clicking an open chapter to CLOSE it.
+  If it was closed, we add 'open' class — CSS then expands max-height.
+
+
+----------------------------------------------------------------
+SECTION 3: Quote Carousel (lines 806–831)
+----------------------------------------------------------------
+
+const slides = document.querySelectorAll('.quote-slide');
+-----------------------------------------------------------------
+  Selects all .quote-slide elements and stores them in 'slides'.
+  querySelectorAll returns a NodeList (similar to an array).
+
+let current = 0;
+let timer;
+-----------------------------------------------------------------
+  'current' tracks which slide is showing (index into slides array).
+  'timer' will hold the interval ID (so we can cancel and restart it).
+  'let' declares a variable that can be reassigned.
+  'const' declares a variable that cannot be reassigned.
+
+slides.forEach((_, i) => {
+-----------------------------------------------------------------
+  Loops through each slide. The _ means "I don't need the first
+  parameter (the slide element)" — convention for ignored params.
+  'i' is the index (0, 1, 2...).
+
+const d = document.createElement('div');
+-----------------------------------------------------------------
+  Creates a new <div> element in memory (not yet on the page).
+
+d.className = 'dot' + (i === 0 ? ' active' : '');
+-----------------------------------------------------------------
+  Sets the class on the new div.
+  (i === 0 ? ' active' : '')  → TERNARY OPERATOR.
+    condition ? valueIfTrue : valueIfFalse
+    If this is the first dot (index 0), add ' active' class.
+    Otherwise, add empty string (no extra class).
+
+d.addEventListener('click', () => goTo(i));
+-----------------------------------------------------------------
+  Each dot, when clicked, calls goTo() with its index.
+  The 'i' is CAPTURED in a CLOSURE — the function remembers
+  the value of 'i' at the time it was created.
+
+dotsContainer.appendChild(d);
+-----------------------------------------------------------------
+  .appendChild() inserts the new element as the LAST CHILD
+  of dotsContainer. This adds the dot to the actual page.
+
+function goTo(n) {
+-----------------------------------------------------------------
+  Switches to slide number 'n'.
+
+current = (n + slides.length) % slides.length;
+-----------------------------------------------------------------
+  Modulo (%) operation handles wrapping:
+  If current = 5 and slides.length = 6:
+    (5 + 6) % 6 = 11 % 6 = 5 — stays at 5
+  If current = 5 and we do goTo(6):
+    (6 + 6) % 6 = 12 % 6 = 0 — wraps back to first slide
+  Adding slides.length before % prevents negative numbers.
+
+function resetTimer() {
+  clearInterval(timer);
+  timer = setInterval(() => goTo(current + 1), 5000);
+}
+-----------------------------------------------------------------
+  setInterval(fn, ms)  → Calls fn every ms milliseconds.
+                          Here: advance to next slide every 5000ms (5 seconds).
+  clearInterval(timer) → Stops the previous interval.
+  We CLEAR then RESET whenever the user manually clicks a dot —
+  so clicking doesn't cause a jarring auto-advance right after.
+  'timer' stores the interval ID returned by setInterval.
+
+
+----------------------------------------------------------------
+SECTION 4: Smooth Scroll (lines 834–840)
+----------------------------------------------------------------
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+-----------------------------------------------------------------
+  a[href^="#"]  → ATTRIBUTE SELECTOR with ^ (starts-with):
+    a          = anchor tag
+    [href^="#"] = whose href attribute STARTS WITH "#"
+  This selects all internal anchor links.
+
+e.preventDefault();
+-----------------------------------------------------------------
+  Stops the browser's DEFAULT behavior (instantly jumping to the anchor).
+  We then implement our own smoother behavior.
+
+target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+-----------------------------------------------------------------
+  .scrollIntoView()  → Built-in method to scroll an element into view.
+  behavior: 'smooth' → Animate the scroll (not instant jump).
+  block: 'start'     → Align to the TOP of the viewport.
+
+
+----------------------------------------------------------------
+SECTION 5: Fade-in on Scroll (lines 843–857)
+----------------------------------------------------------------
+
+const observer = new IntersectionObserver(entries => {
+-----------------------------------------------------------------
+  IntersectionObserver is a browser API that watches elements
+  and fires a callback when they enter or leave the viewport.
+  Much more efficient than listening to scroll events.
+
+}, { threshold: 0.1 });
+-----------------------------------------------------------------
+  threshold: 0.1  → Fire the callback when 10% of the element
+                    is visible in the viewport.
+
+entries.forEach(entry => {
+  if (entry.isIntersecting) { ... }
+});
+-----------------------------------------------------------------
+  entry.isIntersecting  → true when the element is visible.
+  We only change opacity when the element enters the viewport
+  (not when it leaves), so elements stay visible after appearing.
+
+el.style.opacity = '0';
+el.style.transform = 'translateY(20px)';
+el.style.transition = 'opacity .6s ease, transform .6s ease';
+observer.observe(el);
+-----------------------------------------------------------------
+  Before observing, we:
+  1. Set opacity to 0 (invisible)
+  2. Push 20px down (slightly below final position)
+  3. Set up the CSS transition
+  4. Tell the observer to WATCH this element
+
+When the observer triggers (element visible), we set:
+  opacity: 1     → fades in
+  translateY(0)  → moves up to natural position
+  The CSS transition animates both changes over 0.6 seconds.
+
+RESULT: Cards fade in and slide up as they enter the viewport.
+
+
+================================================================
+PART 15 — KEY CONCEPTS SUMMARY
+================================================================
+
+HTML CONCEPTS USED:
+  - Document structure (DOCTYPE, html, head, body)
+  - Semantic elements (nav, section, footer, main)
+  - Attributes (class, id, href, style, lang, charset)
+  - Meta tags (charset, viewport)
+  - HTML entities (&amp; &#128054; etc.)
+  - Heading hierarchy (h1-h3)
+  - Lists (ul, li)
+  - Links (a href)
+  - Text formatting (em, strong, span, br)
+  - Containers (div)
+
+CSS CONCEPTS USED:
+  - Selectors: element, .class, #id, descendant, :hover, ::before/after
+  - Custom properties / CSS variables (--name: value; var(--name))
+  - Box model (margin, padding, border, box-sizing)
+  - Flexbox (display:flex, align-items, justify-content, flex-wrap, gap)
+  - CSS Grid (display:grid, grid-template-columns, repeat, minmax, auto-fit)
+  - Positioning (static, relative, absolute, fixed)
+  - Z-index (stacking order)
+  - Transitions (transition: property duration timing)
+  - Animations (@keyframes, animation property)
+  - Gradients (linear-gradient, radial-gradient)
+  - Pseudo-elements (::before, ::after)
+  - Media queries (@media)
+  - Clamp() function for responsive sizing
+  - Units: px, rem, em, %, vw, vh
+
+JAVASCRIPT CONCEPTS USED:
+  - DOM selection (getElementById, querySelector, querySelectorAll)
+  - Event listeners (addEventListener, scroll, click)
+  - Arrow functions (() => {})
+  - DOM traversal (.closest(), .children)
+  - Class manipulation (.classList.add, .remove, .contains)
+  - Dynamic element creation (createElement, appendChild)
+  - Inline style manipulation (.style.property)
+  - Ternary operator (condition ? a : b)
+  - setInterval / clearInterval
+  - Modulo operator (%)
+  - IntersectionObserver API
+  - scrollIntoView
+  - Template literals (string + variable + '%')
+
+DESIGN PATTERNS USED:
+  - CSS Variable system for consistent theming
+  - Utility classes (.btn, .container, .section-label)
+  - Modifier classes (.btn-primary, .btn-outline, .char-card.lia)
+  - Event delegation (one listener on parent instead of many on children)
+  - Guard clauses (early return for invalid states)
+  - CSS-driven animations triggered by JS class toggling
+  - Pseudo-element decoration (no extra HTML needed)
+  - Responsive design: clamp(), auto-fit grid, media queries
+
+
+================================================================
+LEARNING PATH RECOMMENDATIONS
+================================================================
+
+If this file was your first exposure to web development, here is
+a recommended order for deeper learning:
+
+  1. HTML basics — tags, attributes, document structure
+  2. CSS fundamentals — selectors, box model, colors, fonts
+  3. CSS layout — Flexbox, then Grid
+  4. CSS effects — transitions, animations, gradients
+  5. JavaScript basics — variables, functions, conditions, loops
+  6. JavaScript DOM — selecting elements, changing content/style
+  7. JavaScript events — click, scroll, keyboard, input
+  8. JavaScript async — fetch, promises (for APIs)
+  9. Responsive design — media queries, viewport units, clamp()
+  10. Browser APIs — IntersectionObserver, localStorage, etc.
+
+Every concept in index.html is from categories 1-9 above.
+You now understand the full stack of a modern single-page website.
+
+================================================================
+  End of learning html.txt
+  File: index.html — Dog Wisdom, Lia & the AI Disciples
+================================================================
