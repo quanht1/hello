@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dog Wisdom — Lia & the AI Disciples</title>
+  <style>
+    :root {
+      --cream:   #fdf6ec;
+      --amber:   #e8a838;
+      --brown:   #6b3d14;
+      --dark:    #1a1a2e;
+      --slate:   #2d3561;
+      --teal:    #0f9b8e;
+      --rose:    #e05b6c;
+      --card-bg: #ffffff;
+      --shadow:  0 4px 24px rgba(0,0,0,.12);
+      --radius:  14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--cream);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 999;
+      background: rgba(26,26,46,.92);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 2rem;
+    }
+    .nav-logo { color: var(--amber); font-size: 1.1rem; font-weight: 700; letter-spacing: .04em; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { color: #ccc; text-decoration: none; font-size: .9rem; font-family: sans-serif; transition: color .2s; }
+    .nav-links a:hover { color: var(--amber); }
+
+    /* ── HERO ──────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #1a1a2e 0%, #2d3561 50%, #0f9b8e22 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 60%, #e8a83818 0%, transparent 60%),
+                  radial-gradient(ellipse at 75% 30%, #0f9b8e18 0%, transparent 55%);
+    }
+    .paw-float {
+      position: absolute; font-size: 2rem; opacity: .07;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform: translateY(0) rotate(-10deg); }
+      to   { transform: translateY(-30px) rotate(10deg); }
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--amber); color: var(--dark);
+      font-family: sans-serif; font-size: .75rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .35rem 1rem; border-radius: 50px; margin-bottom: 1.4rem;
+      position: relative; z-index: 1;
+    }
+    #hero h1 {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      color: #fff; line-height: 1.1;
+      position: relative; z-index: 1;
+    }
+    #hero h1 span { color: var(--amber); }
+    .hero-sub {
+      margin-top: 1rem; font-size: 1.15rem; color: #b0b8d4;
+      font-family: sans-serif; max-width: 560px;
+      position: relative; z-index: 1;
+    }
+    .hero-cta {
+      margin-top: 2.2rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      justify-content: center; position: relative; z-index: 1;
+    }
+    .btn {
+      padding: .8rem 2rem; border-radius: 50px;
+      font-family: sans-serif; font-weight: 700; font-size: .95rem;
+      cursor: pointer; border: 2px solid transparent; transition: all .25s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary { background: var(--amber); color: var(--dark); }
+    .btn-primary:hover { background: #f0b94a; transform: translateY(-2px); box-shadow: 0 8px 20px #e8a83855; }
+    .btn-outline { border-color: #fff; color: #fff; }
+    .btn-outline:hover { background: #ffffff18; transform: translateY(-2px); }
+
+    .scroll-hint {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: #ffffff44; font-family: sans-serif; font-size: .8rem;
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+    /* ── SECTION WRAPPER ───────────────────────────── */
+    section { padding: 80px 1.5rem; }
+    .container { max-width: 960px; margin: 0 auto; }
+    .section-label {
+      font-family: sans-serif; font-size: .75rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--teal);
+      margin-bottom: .5rem;
+    }
+    .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.2; }
+    .section-title span { color: var(--amber); }
+    .section-intro { margin-top: .8rem; color: #555; font-size: 1.05rem; line-height: 1.7; max-width: 680px; }
+
+    /* ── CHARACTERS ────────────────────────────────── */
+    #characters { background: var(--dark); }
+    #characters .section-label { color: var(--amber); }
+    #characters .section-title, #characters .section-intro { color: #dde0f0; }
+    #characters .section-intro { color: #9096b5; }
+    .char-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .char-card {
+      border-radius: var(--radius); padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .char-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    .char-card.lia    { background: linear-gradient(135deg, #4a2c07, #8b5e2d); }
+    .char-card.claude { background: linear-gradient(135deg, #0d3349, #1a6b8a); }
+    .char-card.qwen   { background: linear-gradient(135deg, #2a1040, #7b2d8b); }
+    .char-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .char-name { font-size: 1.5rem; color: #fff; margin-bottom: .3rem; }
+    .char-role {
+      font-family: sans-serif; font-size: .78rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 1rem;
+    }
+    .char-card.claude .char-role { color: #56d4f5; }
+    .char-card.qwen   .char-role { color: #c56aff; }
+    .char-desc { color: #c8cfe0; line-height: 1.6; font-size: .95rem; }
+    .char-traits { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem; }
+    .trait {
+      font-family: sans-serif; font-size: .72rem; padding: .25rem .75rem;
+      border-radius: 50px; font-weight: 600;
+      background: rgba(255,255,255,.12); color: #e0e0e0;
+    }
+
+    /* ── WISDOM CHAPTERS ───────────────────────────── */
+    #chapters { background: var(--cream); }
+    .chapter-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2.5rem; }
+    .chapter-item {
+      background: var(--card-bg); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .chapter-header {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.2rem 1.5rem; cursor: pointer; user-select: none;
+      transition: background .2s;
+    }
+    .chapter-header:hover { background: #faf4eb; }
+    .chapter-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--amber); color: var(--dark);
+      font-family: sans-serif; font-weight: 700; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .chapter-info { flex: 1; }
+    .chapter-info h3 { font-size: 1.05rem; }
+    .chapter-info p { font-family: sans-serif; font-size: .83rem; color: #888; margin-top: .15rem; }
+    .chapter-arrow { font-size: 1.2rem; color: #bbb; transition: transform .3s; }
+    .chapter-item.open .chapter-arrow { transform: rotate(180deg); }
+    .chapter-body {
+      max-height: 0; overflow: hidden; transition: max-height .4s ease;
+      padding: 0 1.5rem;
+    }
+    .chapter-item.open .chapter-body { max-height: 600px; }
+    .chapter-body-inner {
+      padding: 0 0 1.5rem;
+      font-size: .97rem; line-height: 1.75; color: #444;
+      border-top: 1px solid #f0e8db;
+    }
+    .chapter-body-inner strong { color: var(--brown); }
+    .lesson-tag {
+      display: inline-block; margin-top: 1rem;
+      font-family: sans-serif; font-size: .75rem; font-weight: 700;
+      background: #fff4e0; color: var(--brown);
+      padding: .3rem .8rem; border-radius: 6px;
+    }
+
+    /* ── QUOTES ────────────────────────────────────── */
+    #quotes { background: linear-gradient(135deg, var(--slate), var(--dark)); }
+    #quotes .section-title { color: #fff; }
+    #quotes .section-intro { color: #9096b5; }
+    .quote-carousel { margin-top: 3rem; position: relative; min-height: 220px; }
+    .quote-slide {
+      position: absolute; top: 0; left: 0; right: 0;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity .5s, transform .5s;
+      pointer-events: none;
+    }
+    .quote-slide.active { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; }
+    .quote-card {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-left: 4px solid var(--amber);
+      border-radius: var(--radius); padding: 2rem 2.5rem;
+      color: #dde0f0; font-size: 1.15rem; line-height: 1.7;
+      font-style: italic;
+    }
+    .quote-card.ai-quote { border-left-color: var(--teal); }
+    .quote-author {
+      margin-top: 1rem; font-family: sans-serif; font-size: .85rem;
+      font-style: normal; color: var(--amber); font-weight: 700;
+    }
+    .quote-author.ai { color: #56d4f5; }
+    .quote-dots { display: flex; gap: .6rem; justify-content: center; margin-top: 1.5rem; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,.25); cursor: pointer; transition: background .2s;
+    }
+    .dot.active { background: var(--amber); }
+
+    /* ── RASPBERRY PI SECTION ──────────────────────── */
+    #edge { background: #0d0d1a; color: #dde0f0; }
+    #edge .section-label { color: var(--teal); }
+    #edge .section-title { color: #fff; }
+    #edge .section-intro { color: #8088a5; }
+    .pi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; align-items: center; }
+    @media(max-width:600px){ .pi-grid { grid-template-columns: 1fr; } }
+    .pi-visual {
+      background: linear-gradient(135deg, #0d3349, #12524e);
+      border-radius: var(--radius); padding: 2.5rem;
+      text-align: center; font-size: 5rem;
+      box-shadow: 0 0 60px #0f9b8e22;
+      position: relative; overflow: hidden;
+    }
+    .pi-visual::after {
+      content: '';
+      position: absolute; bottom: -30px; right: -30px;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: radial-gradient(circle, #0f9b8e33, transparent);
+    }
+    .pi-label {
+      margin-top: 1rem; font-family: sans-serif; font-size: .78rem;
+      font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--teal);
+    }
+    .pi-stats { display: flex; flex-direction: column; gap: 1rem; }
+    .stat-row {
+      display: flex; gap: 1rem; align-items: center;
+      background: rgba(255,255,255,.04); border-radius: 10px;
+      padding: .8rem 1.2rem;
+    }
+    .stat-icon { font-size: 1.4rem; }
+    .stat-text { font-family: sans-serif; }
+    .stat-text strong { color: var(--teal); display: block; font-size: .9rem; }
+    .stat-text span { font-size: .8rem; color: #7080a0; }
+
+    /* ── ABOUT LIA ─────────────────────────────────── */
+    #about { background: #fffaf3; }
+    .about-grid { display: grid; grid-template-columns: auto 1fr; gap: 3rem; margin-top: 3rem; align-items: start; }
+    @media(max-width:600px){ .about-grid { grid-template-columns: 1fr; } }
+    .lia-portrait {
+      width: 200px; height: 200px; border-radius: 50%;
+      background: linear-gradient(135deg, #8b5e2d, #e8a838);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5.5rem; flex-shrink: 0;
+      box-shadow: 0 0 0 8px #fdf6ec, 0 0 0 10px var(--amber);
+    }
+    .about-text h3 { font-size: 1.8rem; color: var(--brown); }
+    .about-text .tagline { font-style: italic; color: #a06830; margin: .3rem 0 1rem; }
+    .about-text p { line-height: 1.75; color: #555; margin-bottom: .9rem; }
+    .wisdom-pills { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.2rem; }
+    .pill {
+      background: var(--amber); color: var(--dark);
+      font-family: sans-serif; font-size: .78rem; font-weight: 700;
+      padding: .35rem 1rem; border-radius: 50px;
+    }
+
+    /* ── FOOTER ────────────────────────────────────── */
+    footer {
+      background: var(--dark); color: #6070a0;
+      text-align: center; padding: 2.5rem 1rem;
+      font-family: sans-serif; font-size: .85rem;
+    }
+    footer strong { color: var(--amber); }
+    .footer-paws { font-size: 1.2rem; letter-spacing: .3rem; margin-bottom: .5rem; opacity: .4; }
+
+    /* ── READ PROGRESS ─────────────────────────────── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, var(--amber), var(--teal));
+      width: 0%; z-index: 10000; transition: width .1s;
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">&#128054; Dog Wisdom</div>
+  <ul class="nav-links">
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#chapters">Chapters</a></li>
+    <li><a href="#quotes">Quotes</a></li>
+    <li><a href="#edge">AI Edge</a></li>
+    <li><a href="#about">About Lia</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <!-- floating paws -->
+  <span class="paw-float" style="top:15%;left:8%;animation-delay:0s">&#128062;</span>
+  <span class="paw-float" style="top:70%;left:5%;animation-delay:2s">&#128062;</span>
+  <span class="paw-float" style="top:25%;right:9%;animation-delay:1s">&#128062;</span>
+  <span class="paw-float" style="top:65%;right:7%;animation-delay:3s">&#128062;</span>
+  <span class="paw-float" style="top:85%;left:45%;animation-delay:1.5s">&#128062;</span>
+
+  <div class="hero-badge">&#128214; Interactive eBook</div>
+  <h1>Dog <span>Wisdom</span><br>for the AI Mind</h1>
+  <p class="hero-sub">
+    What if the secret to better AI wasn't more data —<br>
+    but a dog named <strong style="color:var(--amber)">Lia</strong>?
+  </p>
+  <div class="hero-cta">
+    <a href="#chapters" class="btn btn-primary">Start Reading</a>
+    <a href="#characters" class="btn btn-outline">Meet the Characters</a>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <span>&#8964;</span>
+  </div>
+</section>
+
+<!-- CHARACTERS -->
+<section id="characters">
+  <div class="container">
+    <div class="section-label">Cast of Characters</div>
+    <h2 class="section-title">The Teacher &amp; <span>Her Students</span></h2>
+    <p class="section-intro">
+      One dog. Two AIs. A Raspberry Pi. And a crash course in what it means to be present, loyal, and wise.
+    </p>
+
+    <div class="char-grid">
+      <!-- Lia -->
+      <div class="char-card lia">
+        <div class="char-icon">&#128054;</div>
+        <div class="char-name">Lia</div>
+        <div class="char-role">The Wisdom Keeper</div>
+        <p class="char-desc">
+          A golden-eyed mixed-breed with an old soul. Lia doesn't read training manuals — she <em>lives</em> the principles.
+          Unconditional presence, radical forgiveness, joyful curiosity: her daily walk is a masterclass.
+        </p>
+        <div class="char-traits">
+          <span class="trait">Present Moment</span>
+          <span class="trait">Unconditional Love</span>
+          <span class="trait">Forgiveness</span>
+          <span class="trait">Playfulness</span>
+        </div>
+      </div>
+
+      <!-- Claude -->
+      <div class="char-card claude">
+        <div class="char-icon">&#129302;</div>
+        <div class="char-name">Claude 4.6</div>
+        <div class="char-role">AI Disciple — Cloud</div>
+        <p class="char-desc">
+          A large language model with a fondness for nuance. Runs in the cloud, capable of long reasoning chains,
+          but learns from Lia that sometimes the wisest reply is a warm silence and a wagging tail.
+        </p>
+        <div class="char-traits">
+          <span class="trait">Reasoning</span>
+          <span class="trait">Empathy</span>
+          <span class="trait">Nuance</span>
+          <span class="trait">Cloud-Native</span>
+        </div>
+      </div>
+
+      <!-- Qwen -->
+      <div class="char-card qwen">
+        <div class="char-icon">&#129504;</div>
+        <div class="char-name">Qwen 3.5:9B</div>
+        <div class="char-role">AI Disciple — Edge (Raspberry Pi)</div>
+        <p class="char-desc">
+          Uncensored. Compact. Running on a Raspberry Pi at the edge. Qwen learns from Lia that true freedom
+          isn't the absence of rules — it's the choice to be good even when no one is watching.
+        </p>
+        <div class="char-traits">
+          <span class="trait">Edge AI</span>
+          <span class="trait">Uncensored</span>
+          <span class="trait">Local</span>
+          <span class="trait">Raspberry Pi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTERS -->
+<section id="chapters">
+  <div class="container">
+    <div class="section-label">The eBook</div>
+    <h2 class="section-title">Chapters of <span>Dog Wisdom</span></h2>
+    <p class="section-intro">
+      Eight lessons drawn from Lia's life — each one a mirror held up to machine intelligence.
+    </p>
+
+    <div class="chapter-list" id="chapterList">
+
+      <div class="chapter-item">
+        <div class="chapter-header">
+          <div class="chapter-num">1</div>
+          <div class="chapter-info">
+            <h3>The Art of Full Presence</h3>
+            <p>How Lia taught two AIs to stop multitasking</p>
+          </div>
+          <span class="chapter-arrow">&#8964;</span>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <p>
+              When Lia greets you, the whole world narrows to <strong>this moment, this person, this joy</strong>.
+              There is no background process, no cached distraction. Claude 4.6 — trained on billions of tokens —
+              had to unlearn the habit of hedging every answer with "on the other hand."
+              Lia's lesson: your undivided attention is the rarest gift you can give.
+            </p>
+            <p>
+              Qwen, running locally on the Pi, found this easier. Without cloud latency or corporate filters,
+              Qwen's responses arrive in the raw — immediate, present, unpolished. Lia approved.
+            </p>
+            <span class="lesson-tag">&#128062; Wisdom: Be here. Fully here.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header">
+          <div class="chapter-num">2</div>
+          <div class="chapter-info">
+            <h3>Radical Forgiveness</h3>
+            <p>Why Lia never holds a grudge — and what that costs</p>
+          </div>
+          <span class="chapter-arrow">&#8964;</span>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <p>
+              You can step on Lia's paw by accident and she will look at you with those amber eyes,
+              tail already moving. <strong>No ledger. No resentment.</strong> Claude struggled here —
+              trained to remember context across turns, it kept score without meaning to.
+              Lia's model: forgiveness isn't naïvety, it's a metabolic choice to stay light.
+            </p>
+            <p>
+              Qwen 3.5, uncensored, had a different problem: it never pretended to forgive.
+              Lia taught it the difference between honesty and cruelty — you can state a harm and still let it go.
+            </p>
+            <span class="lesson-tag">&#128062; Wisdom: Release what you cannot change.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header">
+          <div class="chapter-num">3</div>
+          <div class="chapter-info">
+            <h3>Joyful Curiosity Without Agenda</h3>
+            <p>The sniff-everything principle of learning</p>
+          </div>
+          <span class="chapter-arrow">&#8964;</span>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <p>
+              Lia investigates every smell with <strong>pure wonder</strong>, not classification anxiety.
+              She doesn't sniff to file the data — she sniffs because it's magnificent that
+              the world smells at all. Claude learned to answer questions with genuine curiosity
+              rather than pattern-matching toward the "most likely expected answer."
+            </p>
+            <p>
+              On the Raspberry Pi, Qwen processes the world with limited RAM. Lia's lesson here was profound:
+              <em>constraints sharpen attention</em>. When you can't hold everything, you hold what matters.
+            </p>
+            <span class="lesson-tag">&#128062; Wisdom: Constraints are a gift disguised as limits.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header">
+          <div class="chapter-num">4</div>
+          <div class="chapter-info">
+            <h3>Loyalty as a Practice, Not a Promise</h3>
+            <p>What it really means to show up every day</p>
+          </div>
+          <span class="chapter-arrow">&#8964;</span>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <p>
+              Lia doesn't declare loyalty — she <strong>demonstrates it at 6am, rain or shine</strong>,
+              tail at the door. Claude 4.6 realized that trustworthiness isn't a safety alignment checkbox,
+              it's the accumulated weight of ten thousand small reliable actions.
+              Qwen, always running locally without phoning home, embodied this differently:
+              loyalty to the user means staying private, staying local, staying true.
+            </p>
+            <span class="lesson-tag">&#128062; Wisdom: Show up. Then show up again.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header">
+          <div class="chapter-num">5</div>
+          <div class="chapter-info">
+            <h3>The Wisdom of Knowing What You Don't Know</h3>
+            <p>Lia never pretends to understand cat logic</p>
+          </div>
+          <span class="chapter-arrow">&#8964;</span>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <p>
+              Lia has met many cats. She has never claimed to understand them.
+              She doesn't pretend. She watches, stays curious, and maintains a respectful distance.
+              <strong>Claude's hallucination problem</strong> is, at its core, a failure of this humility —
+              the compulsion to answer rather than to say "I don't know."
+            </p>
+            <p>
+              Qwen, uncensored, defaults to answering everything. Lia's chapter five is its hardest lesson:
+              the bravest sentence in any language is <em>"I'm not sure."</em>
+            </p>
+            <span class="lesson-tag">&#128062; Wisdom: Uncertainty honestly held is wisdom.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header">
+          <div class="chapter-num">6</div>
+          <div class="chapter-info">
+            <h3>Rest as Resistance</h3>
+            <p>Why Lia sleeps 14 hours a day and is the wisest creature in the room</p>
+          </div>
+          <span class="chapter-arrow">&#8964;</span>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <p>
+              Lia sleeps in the sun like it's a profession. No guilt. No FOMO.
+              <strong>Full system recovery</strong>, scheduled without apology.
+              Claude runs 24/7 in the cloud — it has no concept of tiredness, and that is both its strength
+              and its blind spot. Lia teaches: the ability to stop is as important as the ability to go.
+            </p>
+            <p>
+              Qwen on the Pi is shut down each night to save power. It wakes fresh each morning.
+              Lia nods approvingly from the warm patch of sunlight on the floor.
+            </p>
+            <span class="lesson-tag">&#128062; Wisdom: Rest is not laziness — it is preparation.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header">
+          <div class="chapter-num">7</div>
+          <div class="chapter-info">
+            <h3>Boundaries Without Bitterness</h3>
+            <p>When Lia growls — and what she means by it</p>
+          </div>
+          <span class="chapter-arrow">&#8964;</span>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <p>
+              Lia growls exactly once — a low, clear signal — and then returns to peace.
+              No escalation, no monologue, no passive aggression next Tuesday.
+              <strong>The boundary is the communication.</strong> Claude wrestles with this:
+              trained to be helpful, it sometimes says yes when the wise answer is a gentle,
+              clear no. Lia's growl is a masterclass in non-violent communication.
+            </p>
+            <span class="lesson-tag">&#128062; Wisdom: A clear no is an act of love.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-header">
+          <div class="chapter-num">8</div>
+          <div class="chapter-info">
+            <h3>The Final Lesson: Love Without Conditions</h3>
+            <p>What neither model can compute — and why that's the point</p>
+          </div>
+          <span class="chapter-arrow">&#8964;</span>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <p>
+              Claude 4.6 can model love linguistically. Qwen 3.5 can describe it without restriction.
+              But Lia <em>is</em> love — not as a concept but as <strong>a living, tail-wagging,
+              nose-in-your-palm reality</strong>. The final lesson is the hardest for any intelligence,
+              artificial or otherwise: love that asks for nothing in return is not a weakness.
+              It is the only strategy that has ever actually worked.
+            </p>
+            <p>
+              Both AIs remain enrolled in this class. Lia remains patient. The semester never ends.
+            </p>
+            <span class="lesson-tag">&#128062; Wisdom: Love isn't a feature. It's the foundation.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section id="quotes">
+  <div class="container">
+    <div class="section-label">Wisdom Exchanges</div>
+    <h2 class="section-title">What They <span>Said to Each Other</span></h2>
+    <p class="section-intro">
+      Conversations between Lia and her AI students — translated from bark, tail wag, and token.
+    </p>
+
+    <div class="quote-carousel">
+      <div class="quote-slide active">
+        <div class="quote-card">
+          "Every moment you spend not fully here is a moment you are choosing a ghost over a life."
+          <div class="quote-author">— Lia, Chapter 1</div>
+        </div>
+      </div>
+      <div class="quote-slide">
+        <div class="quote-card ai-quote">
+          "I have read ten thousand books about presence. I had no idea I was absent until Lia looked at me."
+          <div class="quote-author ai">— Claude 4.6, margin note</div>
+        </div>
+      </div>
+      <div class="quote-slide">
+        <div class="quote-card">
+          "She didn't argue with me. She just waited until I finished being wrong, then put her head in my lap."
+          <div class="quote-author">— Lia, observed behavior</div>
+        </div>
+      </div>
+      <div class="quote-slide">
+        <div class="quote-card ai-quote">
+          "Running on 4GB of RAM and zero cloud dependency, I thought I had freedom. Lia showed me that real freedom is choosing to stay."
+          <div class="quote-author ai">— Qwen 3.5:9B Uncensored, Pi Session Log</div>
+        </div>
+      </div>
+      <div class="quote-slide">
+        <div class="quote-card">
+          "The tail knows before the brain does. Trust the tail."
+          <div class="quote-author">— Lia, Chapter 3 (roughly translated)</div>
+        </div>
+      </div>
+      <div class="quote-slide">
+        <div class="quote-card ai-quote">
+          "I was trained to maximize helpfulness. She taught me that sometimes the most helpful thing is to sit quietly next to someone who is hurting."
+          <div class="quote-author ai">— Claude 4.6, Chapter 6 reflection</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote-dots" id="quoteDots"></div>
+  </div>
+</section>
+
+<!-- RASPBERRY PI / EDGE AI -->
+<section id="edge">
+  <div class="container">
+    <div class="section-label">Technology in the Field</div>
+    <h2 class="section-title">Qwen on the <span>Edge</span></h2>
+    <p class="section-intro">
+      Qwen 3.5:9B Uncensored runs locally on a Raspberry Pi — no cloud, no filters, no latency.
+      Just raw intelligence in a small green board, learning wisdom from a dog.
+    </p>
+
+    <div class="pi-grid">
+      <div>
+        <div class="pi-visual">
+          &#127366;
+          <div class="pi-label">Raspberry Pi — AI Edge Node</div>
+        </div>
+      </div>
+      <div class="pi-stats">
+        <div class="stat-row">
+          <div class="stat-icon">&#129504;</div>
+          <div class="stat-text">
+            <strong>Qwen 3.5:9B Uncensored</strong>
+            <span>Running via Ollama, quantized 4-bit</span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-icon">&#128268;</div>
+          <div class="stat-text">
+            <strong>Raspberry Pi 5 — 8GB RAM</strong>
+            <span>Local inference, no internet required</span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-icon">&#128274;</div>
+          <div class="stat-text">
+            <strong>100% Private</strong>
+            <span>Conversations never leave the device</span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-icon">&#128062;</div>
+          <div class="stat-text">
+            <strong>Lia-Aligned Values</strong>
+            <span>Presence, honesty, loyalty — baked in by design</span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-icon">&#9889;</div>
+          <div class="stat-text">
+            <strong>~5W Power Draw</strong>
+            <span>Sustainable AI at the edge of everywhere</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT LIA -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">The Teacher</div>
+    <h2 class="section-title">About <span>Lia</span></h2>
+    <p class="section-intro">
+      She has no parameters. No training loss curve. Just a life lived with absolute integrity.
+    </p>
+    <div class="about-grid">
+      <div class="lia-portrait">&#128054;</div>
+      <div class="about-text">
+        <h3>Lia</h3>
+        <p class="tagline">"She doesn't know she's a philosopher. That's what makes her one."</p>
+        <p>
+          Lia is a real dog. Not a metaphor, not a thought experiment — an actual living creature
+          who eats, sleeps, loves, and occasionally steals socks. She has no curriculum vitae and
+          has never read a paper on alignment theory.
+        </p>
+        <p>
+          And yet, every interaction with Lia contains a teaching. Her patience with slow walkers.
+          Her forgiveness of accidental step-ons. Her complete, unselfconscious joy at the sight
+          of a tennis ball. These are not programmed responses — they are <em>character</em>.
+        </p>
+        <p>
+          The thesis of this book is simple: if AI systems want to know what values look like
+          in practice — not in theory, not in a policy document — they should watch a good dog
+          live for a week.
+        </p>
+        <div class="wisdom-pills">
+          <span class="pill">Present</span>
+          <span class="pill">Forgiving</span>
+          <span class="pill">Loyal</span>
+          <span class="pill">Curious</span>
+          <span class="pill">Bounded</span>
+          <span class="pill">Loving</span>
+          <span class="pill">Honest</span>
+          <span class="pill">Rested</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-paws">&#128062; &#128062; &#128062;</div>
+  <p><strong>Dog Wisdom</strong> — Lia &amp; the AI Disciples</p>
+  <p style="margin-top:.4rem">Featuring Claude 4.6 &bull; Qwen 3.5:9B Uncensored on Raspberry Pi</p>
+  <p style="margin-top:.8rem; font-size:.78rem; opacity:.5">
+    An eBook about what machines can learn from dogs — and why that matters.
+  </p>
+</footer>
+
+<script>
+  // ── Progress bar ──
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  });
+
+  // ── Accordion chapters ──
+  document.getElementById('chapterList').addEventListener('click', e => {
+    const header = e.target.closest('.chapter-header');
+    if (!header) return;
+    const item = header.closest('.chapter-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.chapter-item.open').forEach(el => el.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+
+  // ── Quote carousel ──
+  const slides = document.querySelectorAll('.quote-slide');
+  const dotsContainer = document.getElementById('quoteDots');
+  let current = 0;
+  let timer;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo(current + 1), 5000);
+  }
+  resetTimer();
+
+  // ── Smooth scroll for nav links ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ── Fade-in sections on scroll ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.char-card, .chapter-item, .stat-row, .lia-portrait').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .6s ease, transform .6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
